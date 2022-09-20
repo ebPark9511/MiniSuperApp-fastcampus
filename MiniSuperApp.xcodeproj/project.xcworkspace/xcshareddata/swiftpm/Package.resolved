@@ -1,6 +1,15 @@
 {
   "pins" : [
     {
+      "identity" : "combineext",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/CombineCommunity/CombineExt",
+      "state" : {
+        "branch" : "main",
+        "revision" : "d69aab9e4ce01285f22a63eff9bfefdae161b834"
+      }
+    },
+    {
       "identity" : "modernribs",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/DevYeom/ModernRIBs",

@@ -6,6 +6,9 @@
 //
 
 import ModernRIBs
+import Combine
+import Foundation
+
 
 protocol SuperPayDashBoardRouting: ViewableRouting {
     // TODO: Declare methods the interactor can invoke to manage sub-tree via the router.
@@ -13,28 +16,46 @@ protocol SuperPayDashBoardRouting: ViewableRouting {
 
 protocol SuperPayDashBoardPresentable: Presentable {
     var listener: SuperPayDashBoardPresentableListener? { get set }
-    // TODO: Declare methods the interactor can invoke the presenter to present data.
+    
+    func updateBalance(_ balance: String)
 }
 
 protocol SuperPayDashBoardListener: AnyObject {
     // TODO: Declare methods the interactor can invoke to communicate with other RIBs.
 }
 
+protocol SuperPayDashboardInteractorDependency {
+    var balance: ReadOnlyCurrentValuePublisher<Double> { get}
+}
+
+
 final class SuperPayDashBoardInteractor: PresentableInteractor<SuperPayDashBoardPresentable>, SuperPayDashBoardInteractable, SuperPayDashBoardPresentableListener {
 
     weak var router: SuperPayDashBoardRouting?
     weak var listener: SuperPayDashBoardListener?
 
-    // TODO: Add additional dependencies to constructor. Do not perform any logic
-    // in constructor.
-    override init(presenter: SuperPayDashBoardPresentable) {
+    private let dependency: SuperPayDashboardInteractorDependency
+    
+    private var cancellables: Set<AnyCancellable>
+ 
+    init(
+        presenter: SuperPayDashBoardPresentable,
+        dependency: SuperPayDashboardInteractorDependency
+    ) {
+        self.dependency = dependency
+        self.cancellables = .init()
+
         super.init(presenter: presenter)
         presenter.listener = self
     }
 
     override func didBecomeActive() {
         super.didBecomeActive()
-        // TODO: Implement business logic here.
+        
+        self.dependency.balance.sink(receiveValue: { [weak self] balance in
+            self?.presenter.updateBalance(String(balance))
+        }).store(in: &cancellables)
+        
     }
 
     override func willResignActive() {
