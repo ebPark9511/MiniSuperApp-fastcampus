@@ -103,8 +103,8 @@ final class SuperPayDashBoardViewController: UIViewController, SuperPayDashBoard
         
         NSLayoutConstraint.activate([
             headerStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
-            headerStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            headerStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 10),
+            headerStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            headerStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             
             cardView.topAnchor.constraint(equalTo: headerStackView.bottomAnchor, constant: 10),
             cardView.heightAnchor.constraint(equalToConstant: 100),
