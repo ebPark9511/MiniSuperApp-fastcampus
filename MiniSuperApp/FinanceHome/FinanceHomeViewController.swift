@@ -11,6 +11,17 @@ final class FinanceHomeViewController: UIViewController, FinanceHomePresentable,
   
   weak var listener: FinanceHomePresentableListener?
   
+    private let stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.alignment = .fill
+        stackView.distribution = .equalSpacing
+        stackView.spacing = 4
+        return stackView
+    }()
+
+    
   init() {
     super.init(nibName: nil, bundle: nil)
     
@@ -30,14 +41,25 @@ final class FinanceHomeViewController: UIViewController, FinanceHomePresentable,
   }()
   
   func setupViews() {
-    title = "슈퍼페이"
-    tabBarItem = UITabBarItem(title: "슈퍼페이", image: UIImage(systemName: "creditcard"), selectedImage: UIImage(systemName: "creditcard.fill"))
-    label.text = "Finance Home"
-    view.backgroundColor = .systemBlue
-    view.addSubview(label)
-    NSLayoutConstraint.activate([
-      label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-      label.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-    ])
+      title = "슈퍼페이"
+      tabBarItem = UITabBarItem(title: "슈퍼페이", image: UIImage(systemName: "creditcard"), selectedImage: UIImage(systemName: "creditcard.fill"))
+      view.backgroundColor = .white
+      view.addSubview(stackView)
+      
+      NSLayoutConstraint.activate([
+          stackView.topAnchor.constraint(equalTo: view.topAnchor),
+          stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+          stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+      ])
   }
+    
+    func addDashboard(_ view: ViewControllable) {
+        let vc = view.uiviewController
+        
+        addChild(vc)
+        stackView.addArrangedSubview(vc.view)
+        
+        vc.didMove(toParent: self)
+    }
 }
+ 
