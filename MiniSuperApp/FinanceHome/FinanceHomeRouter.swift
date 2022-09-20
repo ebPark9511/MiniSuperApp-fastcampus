@@ -1,6 +1,6 @@
 import ModernRIBs
 
-protocol FinanceHomeInteractable: Interactable, SuperPayDashBoardListener, CardOnFileDashboardListener {
+protocol FinanceHomeInteractable: Interactable, SuperPayDashBoardListener, CardOnFileDashboardListener, AddPaymentMethodListener {
   var router: FinanceHomeRouting? { get set }
   var listener: FinanceHomeListener? { get set }
 }
@@ -13,18 +13,22 @@ final class FinanceHomeRouter: ViewableRouter<FinanceHomeInteractable, FinanceHo
   
     private let superPayDashboardBuildable: SuperPayDashBoardBuildable
     private let cardOnFileDashboardBuildable: CardOnFileDashboardBuildable
+    private let addPaymentMethodBuildable: AddPaymentMethodBuildable
     
     private var superPayRouting: Routing?
     private var cardOnFileRouting: Routing?
+    private var addPaymentMethodRouting: Routing?
  
     init(
         interactor: FinanceHomeInteractable,
         viewController: FinanceHomeViewControllable,
         superPayDashboardBuildable: SuperPayDashBoardBuildable,
-        cardOnFileDashboardBuildable: CardOnFileDashboardBuildable
+        cardOnFileDashboardBuildable: CardOnFileDashboardBuildable,
+        addPaymentMethodBuildable: AddPaymentMethodBuildable
     ) {
         self.superPayDashboardBuildable = superPayDashboardBuildable
         self.cardOnFileDashboardBuildable = cardOnFileDashboardBuildable
+        self.addPaymentMethodBuildable = addPaymentMethodBuildable
         
         super.init(interactor: interactor, viewController: viewController)
         interactor.router = self
@@ -64,5 +68,23 @@ final class FinanceHomeRouter: ViewableRouter<FinanceHomeInteractable, FinanceHo
         
         
     }
+    
+    func attachAddPaymentMethod() {
+        if addPaymentMethodRouting != nil {
+            return
+        }
+        
+        let router = addPaymentMethodBuildable.build(withListener: interactor)
+        viewControllable.present(router.viewControllable, animated: true, completion: nil)
+        
+        addPaymentMethodRouting = router
+        attachChild(router)
+    }
+    
+    func detachAddPaymentMethod() {
+        
+    }
+    
+  
 
 }

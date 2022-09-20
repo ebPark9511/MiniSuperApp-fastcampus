@@ -3,6 +3,8 @@ import ModernRIBs
 protocol FinanceHomeRouting: ViewableRouting {
     func attachSuperPayDashboard()
     func attachCardOnDashboard()
+    func attachAddPaymentMethod()
+    func detachAddPaymentMethod()
 }
 
 protocol FinanceHomePresentable: Presentable {
@@ -15,27 +17,35 @@ protocol FinanceHomeListener: AnyObject {
 }
 
 final class FinanceHomeInteractor: PresentableInteractor<FinanceHomePresentable>, FinanceHomeInteractable, FinanceHomePresentableListener {
-  
-  weak var router: FinanceHomeRouting?
-  weak var listener: FinanceHomeListener?
-  
-  // TODO: Add additional dependencies to constructor. Do not perform any logic
-  // in constructor.
-  override init(presenter: FinanceHomePresentable) {
-    super.init(presenter: presenter)
-    presenter.listener = self
-  }
-  
-  override func didBecomeActive() {
-    super.didBecomeActive()
     
-      router?.attachSuperPayDashboard()
-      router?.attachCardOnDashboard()
-      
-  }
-  
-  override func willResignActive() {
-    super.willResignActive()
-    // TODO: Pause any business logic.
-  }
+    
+    weak var router: FinanceHomeRouting?
+    weak var listener: FinanceHomeListener?
+    
+    // TODO: Add additional dependencies to constructor. Do not perform any logic
+    // in constructor.
+    override init(presenter: FinanceHomePresentable) {
+        super.init(presenter: presenter)
+        presenter.listener = self
+    }
+    
+    override func didBecomeActive() {
+        super.didBecomeActive()
+        
+        router?.attachSuperPayDashboard()
+        router?.attachCardOnDashboard()
+        
+    }
+    
+    override func willResignActive() {
+        super.willResignActive()
+        // TODO: Pause any business logic.
+    }
+    
+    func cardOnFileDashboardDidTapAddPaymentMethod() {
+        router?.attachAddPaymentMethod()
+    }
+    
+    
+    
 }
