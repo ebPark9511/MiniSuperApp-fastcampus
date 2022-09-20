@@ -25,7 +25,9 @@ protocol SuperPayDashBoardListener: AnyObject {
 }
 
 protocol SuperPayDashboardInteractorDependency {
-    var balance: ReadOnlyCurrentValuePublisher<Double> { get}
+    var balance: ReadOnlyCurrentValuePublisher<Double> { get }
+    var balanceFormater: NumberFormatter { get }
+
 }
 
 
@@ -53,7 +55,12 @@ final class SuperPayDashBoardInteractor: PresentableInteractor<SuperPayDashBoard
         super.didBecomeActive()
         
         self.dependency.balance.sink(receiveValue: { [weak self] balance in
-            self?.presenter.updateBalance(String(balance))
+             
+            self?.dependency.balanceFormater.string(from: NSNumber(value: balance)).map({
+                // 프레젠터는 뷰컨트롤러에서 SuperPayDashboardPresentable를 컨펌하고 있다.
+                self?.presenter.updateBalance($0)
+            })
+            
         }).store(in: &cancellables)
         
     }
