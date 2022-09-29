@@ -17,11 +17,11 @@ protocol AddPaymentMethodPresentable: Presentable {
 }
 
 protocol AddPaymentMethodListener: AnyObject {
-    // TODO: Declare methods the interactor can invoke to communicate with other RIBs.
+    func addPaymentMehodDidTapClose()
 }
 
 final class AddPaymentMethodInteractor: PresentableInteractor<AddPaymentMethodPresentable>, AddPaymentMethodInteractable, AddPaymentMethodPresentableListener {
-
+ 
     weak var router: AddPaymentMethodRouting?
     weak var listener: AddPaymentMethodListener?
 
@@ -41,4 +41,10 @@ final class AddPaymentMethodInteractor: PresentableInteractor<AddPaymentMethodPr
         super.willResignActive()
         // TODO: Pause any business logic.
     }
+    
+    func diddidTapClose() {
+        listener?.addPaymentMehodDidTapClose()
+    }
+    
+
 }

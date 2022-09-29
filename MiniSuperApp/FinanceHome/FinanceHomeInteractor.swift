@@ -18,7 +18,6 @@ protocol FinanceHomeListener: AnyObject {
 
 final class FinanceHomeInteractor: PresentableInteractor<FinanceHomePresentable>, FinanceHomeInteractable, FinanceHomePresentableListener {
     
-    
     weak var router: FinanceHomeRouting?
     weak var listener: FinanceHomeListener?
     
@@ -42,10 +41,15 @@ final class FinanceHomeInteractor: PresentableInteractor<FinanceHomePresentable>
         // TODO: Pause any business logic.
     }
     
+    
+    // MARK: - CardOnFileDashboardListener
     func cardOnFileDashboardDidTapAddPaymentMethod() {
         router?.attachAddPaymentMethod()
     }
     
-    
+    // MARK: - AddPaymentMethodListener
+    func addPaymentMehodDidTapClose() {
+        router?.detachAddPaymentMethod()
+    }
     
 }

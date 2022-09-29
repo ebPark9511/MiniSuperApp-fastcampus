@@ -10,7 +10,6 @@ protocol FinanceHomeViewControllable: ViewControllable {
 }
 
 final class FinanceHomeRouter: ViewableRouter<FinanceHomeInteractable, FinanceHomeViewControllable>, FinanceHomeRouting {
-  
     private let superPayDashboardBuildable: SuperPayDashBoardBuildable
     private let cardOnFileDashboardBuildable: CardOnFileDashboardBuildable
     private let addPaymentMethodBuildable: AddPaymentMethodBuildable
@@ -63,28 +62,34 @@ final class FinanceHomeRouter: ViewableRouter<FinanceHomeInteractable, FinanceHo
         let dashboard = router.viewControllable
         viewController.addDashboard(dashboard)
         
-        self.cardOnFileRouting = router
+        self.addPaymentMethodRouting = router
         attachChild(router)
         
         
     }
     
+    // 뷰컨을 띄웠던 부모가 자식뷰컨을 반드시 삭제하는것을 보장해야함 -> 자식뷰컨의 닫기는 부모가 관리해야함 ( 재사용하기 위해 )
     func attachAddPaymentMethod() {
         if addPaymentMethodRouting != nil {
             return
         }
         
         let router = addPaymentMethodBuildable.build(withListener: interactor)
-        viewControllable.present(router.viewControllable, animated: true, completion: nil)
+        let navigation = NavigationControllerable(root: router.viewControllable)
+        viewControllable.present(navigation, animated: true, completion: nil)
         
         addPaymentMethodRouting = router
         attachChild(router)
     }
     
     func detachAddPaymentMethod() {
+        guard let router = addPaymentMethodRouting else {
+            return
+        }
         
+        viewControllable.dismiss(completion: nil)
+        detachChild(router)
+        addPaymentMethodRouting = nil
     }
-    
-  
 
 }

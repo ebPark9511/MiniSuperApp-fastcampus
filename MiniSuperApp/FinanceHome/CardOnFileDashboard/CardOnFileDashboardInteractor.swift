@@ -18,6 +18,7 @@ protocol CardOnFileDashboardPresentable: Presentable {
     func update(with viewmodels: [PaymentMethodViewModel])
 }
 
+// 리블렛의 통신은 리블랫끼리: CardOnFileDashboardListener는 부모 리블렛의 인터렉터이다.
 protocol CardOnFileDashboardListener: AnyObject {
     func cardOnFileDashboardDidTapAddPaymentMethod()
 }
@@ -66,7 +67,7 @@ final class CardOnFileDashboardInteractor: PresentableInteractor<CardOnFileDashb
     }
     
     func didTapAddPaymentMethod() {
-        // 모달띄우는 역할은 부모가
+        // CardOnFileDashboard는 화면의 일부만 담당하기 때문에 모달띄우는 역할은 부모가 띄우는게 명확해 보임.
         // 리블렛끼리의 통신은 인터렉터끼리
         listener?.cardOnFileDashboardDidTapAddPaymentMethod()
         print("CardOnFileDashboardInteractor, didTapAddPaymentMethod")
